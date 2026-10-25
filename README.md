@@ -73,7 +73,7 @@ These are **candidate test targets, not compatibility claims**. The list contain
 | Talking Tom Cat 2 | Test touch interactions, sound, and animations | No report; wishlist |
 | Talking Ginger | Test character interactions and mini-games | No report; wishlist |
 | Talking Ben the Dog | Test voice interaction and character responses | No report; wishlist |
-| Talking Santa | Test legacy character interactions | No report; wishlist |
+| Talking Santa | Investigate incorrect frame ordering during animation | Tested; frame-order problem reported |
 | Where's My Water? (very old version) | Confirmed working in the user's test; version-specific | Tested working; exact version not recorded here |
 | Where's My Perry? | Tested by the project helper; does not work in the tested setup | Tested not working; exact version and failure details still needed |
 | Cut the Rope | Reported to work reliably in testing | Reported working; exact version not recorded here |
