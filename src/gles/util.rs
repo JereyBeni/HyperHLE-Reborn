@@ -47,7 +47,7 @@ mod pvrtc_payload_size_tests {
         let mut data = vec![0xAA; 20]; // 16-byte prefix + 4-byte 2bpp payload
         data[16..].copy_from_slice(&[1, 2, 3, 4]);
         let normalized = normalize_pvrtc_payload(&data, 32, true, 4, 4).unwrap();
-        assert!(matches!(normalized, Cow::Owned(_)));
+        assert!(matches!(&normalized, Cow::Owned(_)));
         assert_eq!(&normalized[..4], &[1, 2, 3, 4]);
         assert_eq!(normalized.len(), 32);
         assert!(normalized[4..].iter().all(|byte| *byte == 0));
