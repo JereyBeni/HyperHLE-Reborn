@@ -1605,7 +1605,7 @@ fn start_video_if_playing(env: &mut Environment, player: id) {
         Ok(bytes) => bytes,
         Err(error) => {
             log!(
-                "MPMoviePlayerController {:?}: video start could not read {:?}: {}",
+                "MPMoviePlayerController {:?}: video start could not read {:?}: {:?}",
                 player,
                 path.as_str(),
                 error
