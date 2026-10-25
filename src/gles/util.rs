@@ -311,21 +311,34 @@ pub fn try_decode_pvrtc(
         );
         return true;
     };
-    if pvrtc_data.len() != expected_size {
+    // My Talking Tom 2's log shows several PVRTC mip levels whose payloads
+    // are exactly 16 bytes larger than the format's expected compressed data.
+    // Treat that prefix as per-level metadata only when removing it produces
+    // an exact, spec-sized payload. Truncated/other malformed buffers remain
+    // rejected, avoiding out-of-bounds reads in the native decoder.
+    let pvrtc_payload = if pvrtc_data.len() == expected_size {
+        pvrtc_data
+    } else if pvrtc_data.len() == expected_size.saturating_add(16) {
         log!(
-            "Warning: try_decode_pvrtc: PVRTC payload size mismatch for \
-             {width}x{height} (level {level}, format {internalformat:#x}, \
-             is_2bit={is_2bit}): got {} bytes, expected {expected_size}; \
+            "Info: try_decode_pvrtc: ignoring 16-byte per-level prefix for \\
+             {width}x{height} (level {level}, format {internalformat:#x})."
+        );
+        &pvrtc_data[16..]
+    } else {
+        log!(
+            "Warning: try_decode_pvrtc: PVRTC payload size mismatch for \\
+             {width}x{height} (level {level}, format {internalformat:#x}, \\
+             is_2bit={is_2bit}): got {} bytes, expected {expected_size}; \\
              skipping upload.",
             pvrtc_data.len(),
         );
         return true;
-    }
+    };
 
     let upload_format = gles11::RGBA;
 
     let pixels = crate::image::decode_pvrtc_with_alpha(
-        pvrtc_data,
+        pvrtc_payload,
         is_2bit,
         width_u,
         height_u,
