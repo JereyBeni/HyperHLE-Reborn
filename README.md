@@ -18,7 +18,7 @@ The repository does not distribute commercial apps or iOS firmware. Put an app b
 
 ## Game and app compatibility
 
-Compatibility depends on the exact app version, virtual device profile, host GPU/driver, and emulator build. **Playable** means gameplay has been reported; **In-game** means the app gets past startup but may have issues; **Experimental** means only partial startup or limited testing is confirmed. These are community-reported results, not guarantees that every feature or a full playthrough works.
+Compatibility depends on the exact app version, virtual device profile, host GPU/driver, and emulator build. **Playable** means gameplay has been reported; **In-game** means the app gets past startup but may have issues; **Experimental** means only partial startup or limited testing is confirmed. Wishlist entries below are **not compatibility claims**: they are candidate 32-bit iOS app versions from the iOS 6–10 era for which this repository currently has no confirmed test report. An app may have both 32-bit and 64-bit releases, so the exact IPA/build must be checked.
 
 ### Reported playable
 
@@ -57,13 +57,56 @@ Compatibility depends on the exact app version, virtual device profile, host GPU
 
 ### Compatibility work in progress
 
-This fork also investigates apps that need additional iOS framework or graphics support beyond the existing upstream implementation. A successful launch on this fork does **not** automatically mean the same app was tested against the original HyperHLE/touchHLE build.
-
 | App | Current status |
 | --- | --- |
 | My Talking Tom 2 | Work in progress. Current investigation targets startup and the birth-year selection screen; it is **not yet listed as playable**. |
 
-**Reporting results:** Please include the app name, exact app version, device/GPU, emulator build or commit, and what works or fails. An update can change compatibility, so older reports may no longer apply.
+### Community wishlist: classic 32-bit iOS games and apps
+
+These are **wanted test targets**, not confirmed working games. The focus is on 32-bit versions released for or compatible with the iOS 6–10 era. Some titles have multiple releases; check the exact binary architecture and minimum iOS version before testing. “No report” means no confirmed compatibility result is documented in this repository yet, not that nobody anywhere has tested it.
+
+| App / game | What we'd like to test or fix | Status in this repository |
+| --- | --- | --- |
+| My Talking Angela | Fix gameplay, UI, and animation bugs | No report; wishlist |
+| Real Madrid Talking Players | Fix character animations and transitions | No report; wishlist |
+| Talking Tom (classic) | Test older 32-bit releases and core interactions | No report; wishlist |
+| Talking Tom Cat 2 | Test touch interactions, sound, and animations | No report; wishlist |
+| Talking Ginger | Test character interactions and mini-games | No report; wishlist |
+| Talking Ben the Dog | Test voice interaction and character responses | No report; wishlist |
+| Talking Santa | Test legacy character interactions | No report; wishlist |
+| Where's My Water? | Test physics, levels, and touch input | No report; wishlist |
+| Where's My Perry? | Test physics and level progression | No report; wishlist |
+| Cut the Rope | Test physics, ropes, and level logic | No report; wishlist |
+| Cut the Rope: Experiments | Test physics and level progression | No report; wishlist |
+| Angry Birds | Test physics and level gameplay | No report; wishlist |
+| Angry Birds Seasons | Test level packs and rendering | No report; wishlist |
+| Fruit Ninja | Test slicing gestures and effects | No report; wishlist |
+| Jetpack Joyride | Test gameplay, scrolling, and effects | No report; wishlist |
+| Tiny Wings | Test physics and touch controls | No report; wishlist |
+| Doodle Jump | Test accelerometer alternatives and controls | No report; wishlist |
+| Temple Run | Test 3D rendering and controls | No report; wishlist |
+| Subway Surfers (older 32-bit build) | Test 3D rendering and gameplay | No report; wishlist |
+| Plants vs. Zombies | Test touch controls, animations, and levels | No report; wishlist |
+| The Sims FreePlay (older 32-bit build) | Test simulation and UI | No report; wishlist |
+| The Room | Test 3D scenes, puzzles, and touch interactions | No report; wishlist |
+| BADLAND | Test physics, effects, and level gameplay | No report; wishlist |
+| LIMBO (iOS) | Test rendering and touch controls | No report; wishlist |
+| Shadowgun | Test 3D graphics and controls | No report; wishlist |
+| Dead Trigger | Test 3D rendering, input, and gameplay | No report; wishlist |
+| Modern Combat 4: Zero Hour | Test startup, graphics, and controls | No report; wishlist |
+| N.O.V.A. 2 | Test 3D rendering and gameplay | No report; wishlist |
+| Gangstar Rio: City of Saints | Test startup and 3D gameplay | No report; wishlist |
+| FIFA 13 (older iOS build) | Test menus, rendering, and match gameplay | No report; wishlist |
+| LEGO Harry Potter: Years 1–4 | Test 3D scenes and touch controls | No report; wishlist |
+| Scribblenauts Remix | Test touch input and object interactions | No report; wishlist |
+| Toca Kitchen | Test touch interactions and animations | No report; wishlist |
+| Pango Playground | Test scene interactions and animations | No report; wishlist |
+| Pango StoryTime | Test story scenes, audio, and interactions | No report; wishlist |
+| Pango Zoo | Test scene rendering and interactions | No report; wishlist |
+
+### Reporting results
+
+Please include the app name, exact app version, whether the binary is ARMv7/32-bit or ARM64/64-bit, minimum iOS version, device/GPU, emulator build or commit, and what works or fails. A title should only move from the wishlist into a compatibility category after someone provides a reproducible test report.
 
 ## Build and documentation
 
