@@ -335,6 +335,19 @@ fn strlcpy(
     GenericChar::<u8>::strlcpy(env, dst, src, size)
 }
 
+// Clang's fortified libc calls this symbol on Apple platforms. Keep the
+// guest destination within its known capacity rather than allowing a bad
+// size argument to write past the guest buffer.
+fn __strlcpy_chk(
+    env: &mut Environment,
+    dst: MutPtr<u8>,
+    src: ConstPtr<u8>,
+    size: GuestUSize,
+    dest_size: GuestUSize,
+) -> GuestUSize {
+    GenericChar::<u8>::strlcpy(env, dst, src, size.min(dest_size))
+}
+
 // Add these functions to string.rs:
 
 fn strlcat(
@@ -679,6 +692,7 @@ pub const FUNCTIONS: FunctionExports = &[
     export_c_func!(index(_, _)),
     export_c_func!(strrchr(_, _)),
     export_c_func!(strlcpy(_, _, _)),
+    export_c_func!(__strlcpy_chk(_, _, _, _)),
     export_c_func!(strlcat(_, _, _)),
     export_c_func!(strspn(_, _)),
     export_c_func!(strpbrk(_, _)),
