@@ -61,9 +61,9 @@ Compatibility depends on the exact app version, virtual device profile, host GPU
 | --- | --- |
 | My Talking Tom 2 | Work in progress. Current investigation targets startup and the birth-year selection screen; it is **not yet listed as playable**. |
 
-### Community wishlist: classic 32-bit iOS games and apps
+### Community wishlist: 200 classic iOS 5–10 game and app test targets
 
-These are **wanted test targets**, not confirmed working games. The focus is on 32-bit versions released for or compatible with the iOS 6–10 era. Some titles have multiple releases; check the exact binary architecture and minimum iOS version before testing. “No report” means no confirmed compatibility result is documented in this repository yet, not that nobody anywhere has tested it.
+These are **candidate test targets, not compatibility claims**. The list contains 200 distinct entries assembled around games and apps released during or with versions from the iOS 5–10 era. Some later ports or variants may be 64-bit-only, require a newer iOS version, or have a title/version mismatch; check the exact IPA, CPU architecture, and minimum iOS version before testing. Existing test reports are preserved as reported by the project helper; all other entries remain untested here.
 
 | App / game | What we'd like to test or fix | Status in this repository |
 | --- | --- | --- |
@@ -103,6 +103,170 @@ These are **wanted test targets**, not confirmed working games. The focus is on 
 | Pango Playground | Test scene interactions and animations | No report; wishlist |
 | Pango StoryTime | Test story scenes, audio, and interactions | No report; wishlist |
 | Pango Zoo | Test scene rendering and interactions | No report; wishlist |
+| Angry Birds Rio | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Angry Birds Space | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Angry Birds Star Wars | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Angry Birds Star Wars II | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Angry Birds Friends | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Angry Birds Trilogy companion apps | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Bad Piggies | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Amazing Alex | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Where's My Mickey? | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Where's My Water? 2 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Where's My Valentine? | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Where's My Holiday? | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Where's My Summer? | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Where's My Robot? | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Where's My Perry? (older build) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Sprinkle | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Sprinkle Junior | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Pudding Monsters | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Cut the Rope: Time Travel | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Cut the Rope: Magic | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| King of Thieves | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Plants vs. Zombies 2 (older 32-bit build) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Peggle | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Peggle Classic | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Bejeweled 2 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Bejeweled Blitz | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Bookworm | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Chuzzle | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Puzzle Bobble | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Tetris | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Tetris Blitz | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Tetris 2011 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Mahjong Artifacts | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Solitaire | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Spider Solitaire | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| UNO | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Monopoly | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Scrabble | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Yahtzee Adventures | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| The Game of Life | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Risk | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Clue: The Classic Mystery Game | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Infinity Blade | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Infinity Blade II | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Infinity Blade III | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Epic Citadel | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Chair Entertainment's Vengeance demo | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Dungeon Hunter 2 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Dungeon Hunter 3 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Dungeon Hunter 4 (older build) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Order & Chaos Online | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Wild Blood | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| BackStab | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Hero of Sparta | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Gangstar: Miami Vindication | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Gangstar: West Coast Hustle | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Gangstar 2: Kings of L.A. | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Gangstar: New Orleans (check 32-bit build) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Six-Guns | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Brothers in Arms 2: Global Front | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Brothers in Arms 3 (check architecture) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Tom Clancy's Splinter Cell Conviction | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Tom Clancy's Rainbow Six: Shadow Vanguard | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Assassin's Creed: Altaïr's Chronicles | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Assassin's Creed II Discovery | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Prince of Persia: Warrior Within | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Prince of Persia: The Forgotten Sands | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Rayman Jungle Run | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Rayman Fiesta Run | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Rayman Classic | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Sonic the Hedgehog 4 Episode I | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Sonic the Hedgehog 4 Episode II | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Sonic CD | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Sonic the Hedgehog 2 (2013) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Sonic the Hedgehog (2013) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Crazy Taxi | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Jet Set Radio | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Virtua Tennis Challenge | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Street Fighter IV Volt | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Street Fighter X Tekken Mobile | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| King of Fighters-i | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Samurai Shodown II | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Final Fantasy III | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Final Fantasy IV | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Final Fantasy Dimensions | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Chrono Trigger | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Secret of Mana | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Chaos Rings | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Chaos Rings II | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| The World Ends with You: Solo Remix | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Bastion | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Transistor (check architecture) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Superbrothers: Sword & Sworcery EP | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Osmos | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| World of Goo | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Machinarium | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Botanicula | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Year Walk | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Device 6 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| The Silent Age | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| The Walking Dead: Season One | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| The Wolf Among Us | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Broken Age | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| The Cave | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Monument Valley | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Monument Valley 2 (check architecture) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Threes! | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| 2048 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Drop7 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Flow Free | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Unblock Me | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Where's My Water? Free | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Contre Jour | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Lazors | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Slice It! | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Cut the Buttons | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Fruit Ninja: Puss in Boots | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Fruit Ninja Frenzy | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Paper Toss | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Paper Toss 2.0 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Angry Gran Run | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Agent Dash | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Minion Rush (older 32-bit build) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Despicable Me: Minion Rush | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Ski Safari | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Ski Safari 2 (check architecture) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Mega Jump | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Mega Run | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Doodle Jump Christmas Special | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Doodle Jump SpongeBob SquarePants | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Nyan Cat: Lost in Space | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Robot Unicorn Attack 2 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Canabalt | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Super Hexagon | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| VVVVVV | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Bit.Trip Beat | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Geometry Wars: Touch | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Tilt to Live | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Boost 2 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Flight Control | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Harbor Master | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Tiny Wings HD | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Jetpack Joyride: Back to the Future | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Temple Run 2 (older 32-bit build) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Temple Run: Brave | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Temple Run: Oz | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Pitfall! | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Subway Surfers (older build variant) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Rail Rush | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Sonic Dash (older 32-bit build) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Smash Hit | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Riptide GP | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Riptide GP2 (check architecture) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Shine Runner | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Reckless Racing | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Reckless Racing 2 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Asphalt 6: Adrenaline | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Asphalt 5 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Need for Speed Undercover | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Need for Speed Shift | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Need for Speed Hot Pursuit | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Real Racing 2 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Colin McRae Rally | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| F1 2011 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 
 ### Reporting results
 
