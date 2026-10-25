@@ -73,7 +73,9 @@ Results reported by the project helper. These are specific to the tested app ver
 | Sonic CD 1.0.1 | Does not boot |
 | Where's My Mickey? for iPad 1.1.0 | Does not work; exact failure details not provided |
 | Tiny Tower 2.2.8 | Works normally |
-| Infinity Blade (version not provided) | Starts, then hangs after the Unreal logo moves upward; had to be closed from the terminal |
+| Infinity Blade v7895 | Starts, then hangs after the Unreal logo moves upward; had to be closed from the terminal |
+| Rayman Jungle Run (version not provided) | Works, but the letters/text look strange or unclear; exact visual issue not yet identified |
+| Kingdom Rush (version not provided) | Works, but HyperHLE detects or reports the display as 9:16 |
 
 ### Community wishlist: 200 classic iOS 5–10 game and app test targets
 
@@ -159,7 +161,9 @@ These are **candidate test targets, not compatibility claims**. The list contain
 | The Game of Life | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Risk | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Clue: The Classic Mystery Game | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
-| Infinity Blade | Starts normally, then the Unreal logo moves upward and the app stops responding; it had to be closed from the terminal. Version not provided | Tested; hangs after Unreal logo appears |
+| Infinity Blade | Version v7895 starts normally, then the Unreal logo moves upward and the app stops responding; it had to be closed from the terminal | Tested; hangs after Unreal logo appears |
+| Rayman Jungle Run | Reported working, but letters/text look strange or unclear; exact visual issue not identified yet | Tested working; text rendering issue reported |
+| Kingdom Rush | Reported working, but HyperHLE detects/reports the display as 9:16 | Tested working; aspect-ratio detection issue reported |
 | Infinity Blade II | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Infinity Blade III | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Epic Citadel | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
