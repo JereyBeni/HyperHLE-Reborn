@@ -2,12 +2,54 @@
 //!
 //! See also [crate::frameworks::core_graphics::cg_geometry].
 
+use crate::abi::{impl_GuestRet_for_large_struct, GuestArg};
 use crate::dyld::{export_c_func, ConstantExports, FunctionExports, HostConstant};
-use crate::frameworks::core_graphics::{CGPoint, CGRect, CGSize};
+use crate::frameworks::core_graphics::{CGFloat, CGPoint, CGRect, CGSize};
 use crate::frameworks::foundation::ns_string;
 use crate::mem::{ConstVoidPtr, MutVoidPtr, Ptr};
 use crate::objc::{autorelease, id};
 use crate::Environment;
+
+
+/// The iOS 32-bit ABI representation of UIKit's four CGFloat edge insets.
+#[derive(Copy, Clone, Debug, Default, PartialEq)]
+#[repr(C, packed)]
+pub struct UIEdgeInsets {
+    pub top: CGFloat,
+    pub left: CGFloat,
+    pub bottom: CGFloat,
+    pub right: CGFloat,
+}
+impl_GuestRet_for_large_struct!(UIEdgeInsets);
+impl GuestArg for UIEdgeInsets {
+    const REG_COUNT: usize = 4;
+
+    fn from_regs(regs: &[u32]) -> Self {
+        Self {
+            top: f32::from_bits(regs[0]),
+            left: f32::from_bits(regs[1]),
+            bottom: f32::from_bits(regs[2]),
+            right: f32::from_bits(regs[3]),
+        }
+    }
+
+    fn to_regs(self, regs: &mut [u32]) {
+        regs[0] = self.top.to_bits();
+        regs[1] = self.left.to_bits();
+        regs[2] = self.bottom.to_bits();
+        regs[3] = self.right.to_bits();
+    }
+}
+
+impl std::fmt::Display for UIEdgeInsets {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let top = self.top;
+        let left = self.left;
+        let bottom = self.bottom;
+        let right = self.right;
+        write!(f, "{{{top}, {left}, {bottom}, {right}}}")
+    }
+}
 
 /// Allocate a 16-byte block of zeros and return a pointer to it. This matches
 /// the in-memory layout of `UIEdgeInsets { top, left, bottom, right }` where
@@ -48,6 +90,23 @@ pub fn CGRectFromString(env: &mut Environment, string: id) -> CGRect {
         .unwrap_or_default()
 }
 
+pub fn UIEdgeInsetsFromString(env: &mut Environment, string: id) -> UIEdgeInsets {
+    let value = ns_string::to_rust_string(env, string);
+    let Some(inner) = value.trim().strip_prefix('{').and_then(|s| s.strip_suffix('}')) else {
+        return UIEdgeInsets::default();
+    };
+    let values: Vec<CGFloat> = inner
+        .split(',')
+        .map(str::trim)
+        .map(str::parse::<CGFloat>)
+        .collect::<Result<_, _>>()
+        .unwrap_or_default();
+    if values.len() != 4 {
+        return UIEdgeInsets::default();
+    }
+    UIEdgeInsets { top: values[0], left: values[1], bottom: values[2], right: values[3] }
+}
+
 pub fn NSStringFromCGPoint(env: &mut Environment, point: CGPoint) -> id {
     let s = ns_string::from_rust_string(env, point.to_string());
     autorelease(env, s)
@@ -58,6 +117,10 @@ pub fn NSStringFromCGSize(env: &mut Environment, size: CGSize) -> id {
 }
 pub fn NSStringFromCGRect(env: &mut Environment, rect: CGRect) -> id {
     let s = ns_string::from_rust_string(env, rect.to_string());
+    autorelease(env, s)
+}
+pub fn NSStringFromUIEdgeInsets(env: &mut Environment, insets: UIEdgeInsets) -> id {
+    let s = ns_string::from_rust_string(env, insets.to_string());
     autorelease(env, s)
 }
 
@@ -75,9 +138,11 @@ pub const FUNCTIONS: FunctionExports = &[
     export_c_func!(CGPointFromString(_)),
     export_c_func!(CGSizeFromString(_)),
     export_c_func!(CGRectFromString(_)),
+    export_c_func!(UIEdgeInsetsFromString(_)),
     export_c_func!(NSStringFromCGPoint(_)),
     export_c_func!(NSStringFromCGSize(_)),
     export_c_func!(NSStringFromCGRect(_)),
+    export_c_func!(NSStringFromUIEdgeInsets(_)),
     export_c_func!(NSDefaultMallocZone()),
 ];
 
