@@ -6,10 +6,9 @@ use crate::abi::{impl_GuestRet_for_large_struct, GuestArg};
 use crate::dyld::{export_c_func, ConstantExports, FunctionExports, HostConstant};
 use crate::frameworks::core_graphics::{CGFloat, CGPoint, CGRect, CGSize};
 use crate::frameworks::foundation::ns_string;
-use crate::mem::{ConstVoidPtr, MutVoidPtr, Ptr};
+use crate::mem::{ConstVoidPtr, MutVoidPtr, Ptr, SafeRead};
 use crate::objc::{autorelease, id};
 use crate::Environment;
-
 
 /// The iOS 32-bit ABI representation of UIKit's four CGFloat edge insets.
 #[derive(Copy, Clone, Debug, Default, PartialEq)]
@@ -20,6 +19,11 @@ pub struct UIEdgeInsets {
     pub bottom: CGFloat,
     pub right: CGFloat,
 }
+
+// All bit patterns are valid for the four f32 fields, so reading this
+// fixed-layout value from guest memory is sound.
+unsafe impl SafeRead for UIEdgeInsets {}
+
 impl_GuestRet_for_large_struct!(UIEdgeInsets);
 impl GuestArg for UIEdgeInsets {
     const REG_COUNT: usize = 4;
@@ -104,7 +108,12 @@ pub fn UIEdgeInsetsFromString(env: &mut Environment, string: id) -> UIEdgeInsets
     if values.len() != 4 {
         return UIEdgeInsets::default();
     }
-    UIEdgeInsets { top: values[0], left: values[1], bottom: values[2], right: values[3] }
+    UIEdgeInsets {
+        top: values[0],
+        left: values[1],
+        bottom: values[2],
+        right: values[3],
+    }
 }
 
 pub fn NSStringFromCGPoint(env: &mut Environment, point: CGPoint) -> id {
