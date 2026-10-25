@@ -809,11 +809,12 @@ fn schedule_preload_sequence(env: &mut Environment, this: id) {
                 host.duration_known = true;
             }
             if let Some(info) = MovieVideo::probe(&bytes) {
-                log_dbg!(
-                    "MPMoviePlayerController {:?}: H.264 video is {}x{}",
+                log!(
+                    "MPMoviePlayerController {:?}: H.264 video is {}x{} ({:?})",
                     this,
                     info.width,
-                    info.height
+                    info.height,
+                    path.as_str()
                 );
                 let host = env
                     .objc
@@ -823,6 +824,13 @@ fn schedule_preload_sequence(env: &mut Environment, this: id) {
                     height: info.height as f32,
                 };
                 host.video_info = Some(info);
+            } else {
+                log!(
+                    "MPMoviePlayerController {:?}: no supported H.264 video track found in {:?} ({} bytes)",
+                    this,
+                    path.as_str(),
+                    bytes.len()
+                );
             }
         }
     }
@@ -1571,15 +1579,55 @@ fn start_video_if_playing(env: &mut Environment, player: id) {
             host.content_url,
         )
     };
-    if !playing || !supported || url == nil || State::get(env).videos.contains_key(&player) {
+
+    if !playing {
         return;
     }
-    let path = ns_url::to_rust_path(env, url);
-    let Ok(bytes) = env.fs.read(&path) else {
+    if State::get(env).videos.contains_key(&player) {
         return;
+    }
+    if !supported || url == nil {
+        static START_GATE_DIAGNOSTIC_REPORTED: std::sync::atomic::AtomicBool =
+            std::sync::atomic::AtomicBool::new(false);
+        if !START_GATE_DIAGNOSTIC_REPORTED.swap(true, std::sync::atomic::Ordering::Relaxed) {
+            log!(
+                "MPMoviePlayerController {:?}: video start blocked (supported_video={}, content_url_is_nil={})",
+                player,
+                supported,
+                url == nil
+            );
+        }
+        return;
+    }
+
+    let path = ns_url::to_rust_path(env, url);
+    let bytes = match env.fs.read(&path) {
+        Ok(bytes) => bytes,
+        Err(error) => {
+            log!(
+                "MPMoviePlayerController {:?}: video start could not read {:?}: {}",
+                player,
+                path.as_str(),
+                error
+            );
+            return;
+        }
     };
+    log!(
+        "MPMoviePlayerController {:?}: starting video from {:?} ({} bytes, looping={})",
+        player,
+        path.as_str(),
+        bytes.len(),
+        looping
+    );
     if let Some(video) = MovieVideo::start(&bytes, looping) {
         State::get(env).videos.insert(player, video);
+    } else {
+        log!(
+            "MPMoviePlayerController {:?}: video decoder did not start for {:?}",
+            player,
+            path.as_str()
+        );
     }
 }
 
