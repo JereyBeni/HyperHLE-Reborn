@@ -77,9 +77,9 @@ These are **wanted test targets**, not confirmed working games. The focus is on 
 | Where's My Water? (very old version) | Confirmed working in the user's test; version-specific | Tested working; exact version not recorded here |
 | Where's My Perry? | Tested by the project helper; does not work in the tested setup | Tested not working; exact version and failure details still needed |
 | Cut the Rope | Reported to work reliably in testing | Reported working; exact version not recorded here |
-| Cut the Rope: Experiments | Test physics and level progression | No report; wishlist |
+| Cut the Rope: Experiments | Played by the project helper; compatibility result not specified yet | Played; result needs confirmation |
 | Angry Birds | Reported to work reliably in testing | Reported working; exact version not recorded here |
-| Angry Birds Seasons | Test level packs and rendering | No report; wishlist |
+| Angry Birds Seasons | Not yet played by the project helper; remains a test target | Never played; wishlist |
 | Fruit Ninja | Reported working in testing | Reported working; exact version not recorded here |
 | Jetpack Joyride | Possibly works; needs a fresh confirmation | Uncertain; retest needed |
 | Tiny Wings | Reported working in testing | Reported working; exact version not recorded here |
