@@ -119,6 +119,24 @@ pub const CONSTANTS: ConstantExports = &[
         "_CTRadioAccessTechnologyLTE",
         HostConstant::NSString("CTRadioAccessTechnologyLTE"),
     ),
+    // Legacy apps use these call-state strings when registering CTCallCenter
+    // callbacks. HyperHLE has no cellular calls, but the symbols must resolve.
+    (
+        "_CTCallStateIncoming",
+        HostConstant::NSString("CTCallStateIncoming"),
+    ),
+    (
+        "_CTCallStateDialing",
+        HostConstant::NSString("CTCallStateDialing"),
+    ),
+    (
+        "_CTCallStateConnected",
+        HostConstant::NSString("CTCallStateConnected"),
+    ),
+    (
+        "_CTCallStateDisconnected",
+        HostConstant::NSString("CTCallStateDisconnected"),
+    ),
 ];
 
 pub const FUNCTIONS: FunctionExports = &[];

@@ -52,6 +52,8 @@ struct NSOperationQueueHostObject {
     suspended: bool,
     max_concurrent_operations: i32,
     name: id,
+    /// Opaque dispatch_queue_t handle supplied by the guest.
+    underlying_queue: id,
 }
 
 impl HostObject for NSOperationQueueHostObject {}
@@ -668,6 +670,17 @@ pub const CLASSES: ClassExports = objc_classes! {
 
 - (id)name {
     env.objc.borrow::<NSOperationQueueHostObject>(this).name
+}
+
+// MARK: - Underlying dispatch queue
+
+// Keep this as an opaque handle rather than treating it as an NSObject.
+- (())setUnderlyingQueue:(id)queue {
+    env.objc.borrow_mut::<NSOperationQueueHostObject>(this).underlying_queue = queue;
+}
+
+- (id)underlyingQueue {
+    env.objc.borrow::<NSOperationQueueHostObject>(this).underlying_queue
 }
 
 // MARK: - Quality of service (stub)

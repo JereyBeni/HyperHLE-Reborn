@@ -463,6 +463,12 @@ pub const CLASSES: ClassExports = objc_classes! {
     true
 }
 
+// The emulated output route is fixed to the host's speaker. Accept the
+// legacy selector used by iOS 7/8 apps instead of leaving it unimplemented.
+- (bool)overrideOutputAudioPort:(NSUInteger)_portOverride error:(MutPtr<id>)_error {
+    true
+}
+
 // MARK: - Audio properties
 
 - (f64)sampleRate {
