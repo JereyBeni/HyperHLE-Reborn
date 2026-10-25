@@ -145,8 +145,71 @@ pub const CLASSES: ClassExports = objc_classes! {
         }
         release(env, ext_ns);
     }
+    // Outfit7 games may keep UI art in a nested O7Resources.bundle rather
+    // than the app's main bundle. UIKit normally searches the main bundle,
+    // but these games also pass names such as
+    // "O7Resources.bundle/images/PROMO/default_grid_button". Try the nested
+    // resource bundle before falling back to the dummy image.
     if path == nil {
-        log!("UIImage imageNamed: {:?} not found in bundle", name_str);
+        let resources_name = ns_string::get_static_str(env, "O7Resources");
+        let bundle_ext = ns_string::get_static_str(env, "bundle");
+        let resources_path: id =
+            msg![env; bundle pathForResource:resources_name ofType:bundle_ext];
+        if resources_path != nil {
+            let resources_bundle: id =
+                msg_class![env; NSBundle bundleWithPath:resources_path];
+            let nested_name = name_str
+                .strip_prefix("O7Resources.bundle/")
+                .unwrap_or(&name_str)
+                .to_string();
+            let (stem, ext) = match nested_name.rfind('.') {
+                Some(dot) => (
+                    nested_name[..dot].to_string(),
+                    nested_name[dot + 1..].to_string(),
+                ),
+                None => (nested_name.clone(), "png".to_string()),
+            };
+            let ext_ns = ns_string::from_rust_string(env, ext);
+            let is_ipad = env
+                .options
+                .device_family
+                .map_or(false, |family| family.is_ipad());
+            let candidates: Vec<String> = if is_ipad {
+                vec![
+                    stem.clone(),
+                    format!("{}~ipad", stem),
+                    format!("{}@2x~ipad", stem),
+                    format!("{}@2x", stem),
+                    format!("{}~iphone", stem),
+                    format!("{}@2x~iphone", stem),
+                    format!("{}@3x~iphone", stem),
+                    format!("{}@3x", stem),
+                ]
+            } else {
+                vec![
+                    stem.clone(),
+                    format!("{}~iphone", stem),
+                    format!("{}@2x~iphone", stem),
+                    format!("{}@3x~iphone", stem),
+                    format!("{}@2x", stem),
+                    format!("{}@3x", stem),
+                    format!("{}~ipad", stem),
+                    format!("{}@2x~ipad", stem),
+                ]
+            };
+            for candidate in candidates {
+                let candidate = ns_string::from_rust_string(env, candidate);
+                path = msg![env; resources_bundle pathForResource:candidate ofType:ext_ns];
+                release(env, candidate);
+                if path != nil {
+                    break;
+                }
+            }
+            release(env, ext_ns);
+        }
+    }
+    if path == nil {
+        log!("UIImage imageNamed: {:?} not found in main or O7Resources.bundle", name_str);
     }
 
     if State::get(env).cached_images.len() > CACHE_SIZE {
