@@ -61,6 +61,20 @@ Compatibility depends on the exact app version, virtual device profile, host GPU
 | --- | --- |
 | My Talking Tom 2 | Work in progress. Current investigation targets startup and the birth-year selection screen; it is **not yet listed as playable**. |
 
+### Recent test reports on the latest fork
+
+Results reported by the project helper. These are specific to the tested app versions and setup; they are not guarantees for other builds.
+
+| App / version | Result |
+| --- | --- |
+| Angry Birds Rio 2.6.7 | Does not boot |
+| Toca Kitchen 1.1.6 | Works, but the image is stretched incorrectly |
+| Bad Piggies 1.7.0 | Crashes |
+| Sonic CD 1.0.1 | Does not boot |
+| Where's My Mickey? for iPad 1.1.0 | Does not work; exact failure details not provided |
+| Tiny Tower 2.2.8 | Works normally |
+| Infinity Blade (version not provided) | Starts, then hangs after the Unreal logo moves upward; had to be closed from the terminal |
+
 ### Community wishlist: 200 classic iOS 5–10 game and app test targets
 
 These are **candidate test targets, not compatibility claims**. The list contains 200 distinct entries assembled around games and apps released during or with versions from the iOS 5–10 era. Some later ports or variants may be 64-bit-only, require a newer iOS version, or have a title/version mismatch; check the exact IPA, CPU architecture, and minimum iOS version before testing. Existing test reports are preserved as reported by the project helper; all other entries remain untested here.
@@ -99,19 +113,19 @@ These are **candidate test targets, not compatibility claims**. The list contain
 | FIFA 13 (older iOS build) | Test menus, rendering, and match gameplay | No report; wishlist |
 | LEGO Harry Potter: Years 1–4 | Test 3D scenes and touch controls | No report; wishlist |
 | Scribblenauts Remix | Test touch input and object interactions | No report; wishlist |
-| Toca Kitchen | Test touch interactions and animations | No report; wishlist |
+| Toca Kitchen | Version 1.1.6: runs, but the display is stretched incorrectly | Tested; visual scaling/aspect-ratio issue |
 | Pango Playground | Test scene interactions and animations | No report; wishlist |
 | Pango StoryTime | Test story scenes, audio, and interactions | No report; wishlist |
 | Pango Zoo | Test scene rendering and interactions | No report; wishlist |
-| Angry Birds Rio | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Angry Birds Rio | Version 2.6.7 does not boot | Tested; fails to boot |
 | Angry Birds Space | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Angry Birds Star Wars | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Angry Birds Star Wars II | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Angry Birds Friends | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Angry Birds Trilogy companion apps | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
-| Bad Piggies | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Bad Piggies | Version 1.7.0 crashes | Tested; crash on launch/run (exact point not specified) |
 | Amazing Alex | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
-| Where's My Mickey? | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Where's My Mickey? (iPad) | Version 1.1.0 does not work in the tested setup | Tested; failure details not specified |
 | Where's My Water? 2 | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Where's My Valentine? | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Where's My Holiday? | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
@@ -145,7 +159,7 @@ These are **candidate test targets, not compatibility claims**. The list contain
 | The Game of Life | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Risk | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Clue: The Classic Mystery Game | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
-| Infinity Blade | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Infinity Blade | Starts normally, then the Unreal logo moves upward and the app stops responding; it had to be closed from the terminal. Version not provided | Tested; hangs after Unreal logo appears |
 | Infinity Blade II | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Infinity Blade III | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Epic Citadel | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
@@ -175,7 +189,7 @@ These are **candidate test targets, not compatibility claims**. The list contain
 | Rayman Classic | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Sonic the Hedgehog 4 Episode I | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Sonic the Hedgehog 4 Episode II | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
-| Sonic CD | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
+| Sonic CD | Version 1.0.1 does not boot | Tested; fails to boot |
 | Sonic the Hedgehog 2 (2013) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Sonic the Hedgehog (2013) | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Crazy Taxi | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
