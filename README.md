@@ -74,16 +74,16 @@ These are **wanted test targets**, not confirmed working games. The focus is on 
 | Talking Ginger | Test character interactions and mini-games | No report; wishlist |
 | Talking Ben the Dog | Test voice interaction and character responses | No report; wishlist |
 | Talking Santa | Test legacy character interactions | No report; wishlist |
-| Where's My Water? | Test physics, levels, and touch input | No report; wishlist |
-| Where's My Perry? | Test physics and level progression | No report; wishlist |
-| Cut the Rope | Test physics, ropes, and level logic | No report; wishlist |
+| Where's My Water? (very old version) | Confirmed working in the user's test; version-specific | Tested working; exact version not recorded here |
+| Where's My Perry? | Tested by the project helper; does not work in the tested setup | Tested not working; exact version and failure details still needed |
+| Cut the Rope | Reported to work reliably in testing | Reported working; exact version not recorded here |
 | Cut the Rope: Experiments | Test physics and level progression | No report; wishlist |
-| Angry Birds | Test physics and level gameplay | No report; wishlist |
+| Angry Birds | Reported to work reliably in testing | Reported working; exact version not recorded here |
 | Angry Birds Seasons | Test level packs and rendering | No report; wishlist |
-| Fruit Ninja | Test slicing gestures and effects | No report; wishlist |
-| Jetpack Joyride | Test gameplay, scrolling, and effects | No report; wishlist |
-| Tiny Wings | Test physics and touch controls | No report; wishlist |
-| Doodle Jump | Test accelerometer alternatives and controls | No report; wishlist |
+| Fruit Ninja | Reported working in testing | Reported working; exact version not recorded here |
+| Jetpack Joyride | Possibly works; needs a fresh confirmation | Uncertain; retest needed |
+| Tiny Wings | Reported working in testing | Reported working; exact version not recorded here |
+| Doodle Jump | Reported working in testing | Reported working; exact version not recorded here |
 | Temple Run | Test 3D rendering and controls | No report; wishlist |
 | Subway Surfers (older 32-bit build) | Test 3D rendering and gameplay | No report; wishlist |
 | Plants vs. Zombies | Test touch controls, animations, and levels | No report; wishlist |
