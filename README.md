@@ -67,7 +67,7 @@ Results reported by the project helper. These are specific to the tested app ver
 
 | App / version | Result |
 | --- | --- |
-| Angry Birds Rio 2.6.7 | Does not boot |
+| Angry Birds Rio 2.6.7 | First launch fails to show the game; on a second launch, audio plays but no visible game screen appears. Startup/rendering failure still under investigation |
 | Toca Kitchen 1.1.6 | Works, but the image is stretched incorrectly |
 | Bad Piggies 1.7.0 | Crashes |
 | Sonic CD 1.0.1 | Does not boot |
@@ -121,7 +121,7 @@ These are **candidate test targets, not compatibility claims**. The list contain
 | Pango Playground | Test scene interactions and animations | No report; wishlist |
 | Pango StoryTime | Test story scenes, audio, and interactions | No report; wishlist |
 | Pango Zoo | Test scene rendering and interactions | No report; wishlist |
-| Angry Birds Rio | Version 2.6.7 does not boot | Tested; fails to boot |
+| Angry Birds Rio | Version 2.6.7: first launch fails to show the game; on a second launch, audio plays but no visible game screen appears | Tested; audio-only/blank-screen behavior on second launch; exact cause not confirmed |
 | Angry Birds Space | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Angry Birds Star Wars | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
 | Angry Birds Star Wars II | Check startup, graphics, input, audio, and gameplay; verify the exact iOS-era build | No report; wishlist |
