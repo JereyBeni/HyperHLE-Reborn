@@ -717,6 +717,23 @@ int test_AVAsset_assetWithURL(void) {
 - (void)setQuery:(NSString *)query;
 - (NSString *)fragment;
 @end
+// Apple: NSStringFromUIEdgeInsets returns "{top, left, bottom, right}".
+// https://developer.apple.com/documentation/uikit/1624954-nsstringfromuiedgeinsets
+// My Talking Tom 2 builds a dictionary of button insets with it; the stub
+// returned nil and the dictionary insertions were dropped.
+int test_NSStringFromUIEdgeInsets(void) {
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  int result = 0;
+  NSString *zero = NSStringFromUIEdgeInsets(UIEdgeInsetsZero);
+  NSString *some = NSStringFromUIEdgeInsets(UIEdgeInsetsMake(1, 2.5, 3, 4));
+  if (![zero isEqualToString:@"{0, 0, 0, 0}"])
+    result = -1;
+  else if (![some isEqualToString:@"{1, 2.5, 3, 4}"])
+    result = -2;
+  [pool drain];
+  return result;
+}
+
 int test_NSURLComponents(void) {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   int result = 0;
@@ -7743,6 +7760,7 @@ struct {
     FUNC_DEF(test_NSData_base64_data),
     FUNC_DEF(test_NSBundle_subbundleCacheRetainsAutoreleasedBundle),
     FUNC_DEF(test_NSURLComponents),
+    FUNC_DEF(test_NSStringFromUIEdgeInsets),
 };
 // clang-format on
 

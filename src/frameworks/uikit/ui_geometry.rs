@@ -5,6 +5,7 @@
 use crate::dyld::{export_c_func, ConstantExports, FunctionExports, HostConstant};
 use crate::frameworks::core_graphics::{CGPoint, CGRect, CGSize};
 use crate::frameworks::foundation::ns_string;
+use crate::frameworks::uikit::ui_view::ui_scroll_view::UIEdgeInsets;
 use crate::mem::{ConstVoidPtr, MutVoidPtr, Ptr};
 use crate::objc::{autorelease, id};
 use crate::Environment;
@@ -61,6 +62,27 @@ pub fn NSStringFromCGRect(env: &mut Environment, rect: CGRect) -> id {
     autorelease(env, s)
 }
 
+/// `{top, left, bottom, right}`, e.g. `{0, 0, 0, 0}`.
+///
+/// Reference: Apple's `NSStringFromUIEdgeInsets` documentation (UIKit,
+/// iOS 2.0+): "Returns a string formatted to represent a rectangle of
+/// insets" in the form `{top, left, bottom, right}`.
+fn format_edge_insets(top: f32, left: f32, bottom: f32, right: f32) -> String {
+    format!("{{{top}, {left}, {bottom}, {right}}}")
+}
+
+pub fn NSStringFromUIEdgeInsets(env: &mut Environment, insets: UIEdgeInsets) -> id {
+    // Copy the fields out: `UIEdgeInsets` is `repr(packed)`.
+    let UIEdgeInsets {
+        top,
+        left,
+        bottom,
+        right,
+    } = insets;
+    let s = ns_string::from_rust_string(env, format_edge_insets(top, left, bottom, right));
+    autorelease(env, s)
+}
+
 fn NSDefaultMallocZone(env: &mut Environment) -> MutVoidPtr {
     if let Some(ptr) = env.framework_state.uikit.ui_geometry.default_malloc_zone {
         return ptr;
@@ -78,6 +100,7 @@ pub const FUNCTIONS: FunctionExports = &[
     export_c_func!(NSStringFromCGPoint(_)),
     export_c_func!(NSStringFromCGSize(_)),
     export_c_func!(NSStringFromCGRect(_)),
+    export_c_func!(NSStringFromUIEdgeInsets(_)),
     export_c_func!(NSDefaultMallocZone()),
 ];
 
@@ -85,3 +108,18 @@ pub const CONSTANTS: ConstantExports = &[(
     "_UIEdgeInsetsZero",
     HostConstant::Custom(ui_edge_insets_zero),
 )];
+
+#[cfg(test)]
+mod tests {
+    use super::format_edge_insets;
+
+    #[test]
+    fn edge_insets_string_format() {
+        assert_eq!(format_edge_insets(0.0, 0.0, 0.0, 0.0), "{0, 0, 0, 0}");
+        assert_eq!(
+            format_edge_insets(10.0, 5.5, 10.0, 5.5),
+            "{10, 5.5, 10, 5.5}"
+        );
+        assert_eq!(format_edge_insets(-1.0, 2.0, 3.0, 4.0), "{-1, 2, 3, 4}");
+    }
+}
