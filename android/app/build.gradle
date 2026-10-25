@@ -85,10 +85,9 @@ android {
     }
     defaultConfig {
         def branding = getTouchHLEBranding()
-        applicationId 'org.hyperhle.reborn'
-        applicationIdSuffix(branding.isEmpty() ? null : '.' + branding.toLowerCase())
-        resValue 'string', 'app_name', join('HyperHLE-Reborn', ' ', branding)
-        buildConfigField 'String', 'APP_NAME', ('"' + join('HyperHLE-Reborn', ' ', branding) + '"')
+        applicationId 'org.hyperhle.hypershi'
+        resValue 'string', 'app_name', 'HyperShi!'
+        buildConfigField 'String', 'APP_NAME', '"HyperShi!"'
         manifestPlaceholders = [
                 icon: (branding.toLowerCase() == 'unofficial' ? '@drawable/icon' : join('@drawable/icon', '_', branding.toLowerCase()))
         ]

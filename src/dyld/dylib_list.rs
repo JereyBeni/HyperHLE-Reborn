@@ -9,6 +9,17 @@ use crate::frameworks;
 use crate::libc;
 use crate::objc;
 
+// AVKit (dependency-only stub for apps that link video UI; no AVKit
+// controller implementation is claimed until a guest app's actual selector
+// usage is known).
+pub const AV_KIT: super::HostDylib = super::HostDylib {
+    path: "/System/Library/Frameworks/AVKit.framework/AVKit",
+    aliases: &[],
+    class_exports: &[],
+    constant_exports: &[],
+    function_exports: &[],
+};
+
 // CoreAudio
 // libresolv.9 (stub resolver state functions)
 pub const LIBRESOLV: super::HostDylib = super::HostDylib {
@@ -213,6 +224,7 @@ pub const DYLIB_LIST: &[&super::HostDylib] = &[
     &crate::environment::app_picker::DYLIB, // Not a real library; special internal classes.
     &frameworks::audio_toolbox::DYLIB,
     &frameworks::avfoundation::DYLIB,
+    &AV_KIT,
     &frameworks::assets_library::DYLIB,
     &frameworks::core_animation::DYLIB,
     &frameworks::core_foundation::DYLIB,

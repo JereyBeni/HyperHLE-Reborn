@@ -56,11 +56,11 @@ impl_HostObject_with_superclass!(UIScrollViewHostObject);
 
 #[derive(Copy, Clone, Debug, Default)]
 #[repr(C, packed)]
-struct UIEdgeInsets {
-    top: CGFloat,
-    left: CGFloat,
-    bottom: CGFloat,
-    right: CGFloat,
+pub(crate) struct UIEdgeInsets {
+    pub(crate) top: CGFloat,
+    pub(crate) left: CGFloat,
+    pub(crate) bottom: CGFloat,
+    pub(crate) right: CGFloat,
 }
 unsafe impl SafeRead for UIEdgeInsets {}
 impl GuestRet for UIEdgeInsets {}
