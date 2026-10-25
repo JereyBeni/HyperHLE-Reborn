@@ -693,6 +693,92 @@ int test_AVAsset_assetWithURL(void) {
   [pool drain];
   return result;
 }
+// Apple: NSURLComponents (iOS 7.0+) "An object that parses URLs into and
+// constructs URLs from their constituent parts."
+// https://developer.apple.com/documentation/foundation/nsurlcomponents
+// My Talking Tom 2 calls +[NSURLComponents new] during startup (HyperHLE
+// log: `Class "NSURLComponents" is unimplemented`).
+@interface NSURLComponents : NSObject
++ (id)componentsWithString:(NSString *)URLString;
+- (NSURL *)URL;
+- (NSString *)string;
+- (NSString *)scheme;
+- (void)setScheme:(NSString *)scheme;
+- (NSString *)user;
+- (NSString *)password;
+- (NSString *)host;
+- (void)setHost:(NSString *)host;
+- (NSNumber *)port;
+- (void)setPort:(NSNumber *)port;
+- (NSString *)path;
+- (void)setPath:(NSString *)path;
+- (NSString *)percentEncodedPath;
+- (NSString *)query;
+- (void)setQuery:(NSString *)query;
+- (NSString *)fragment;
+@end
+int test_NSURLComponents(void) {
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  int result = 0;
+
+  Class cls = NSClassFromString(@"NSURLComponents");
+  if (cls == Nil) {
+    [pool drain];
+    return -1;
+  }
+
+  // `+new`, as called by the game: empty components.
+  NSURLComponents *empty = [[NSURLComponents new] autorelease];
+  if (empty == nil)
+    result = -2;
+  else if ([empty scheme] != nil || [empty host] != nil || [empty port] != nil)
+    result = -3;
+
+  // Building a URL from parts, which encodes the plain setters.
+  if (result == 0) {
+    NSURLComponents *built = [[NSURLComponents new] autorelease];
+    [built setScheme:@"https"];
+    [built setHost:@"example.com"];
+    [built setPort:[NSNumber numberWithInt:8443]];
+    [built setPath:@"/a b"];
+    [built setQuery:@"k=v"];
+    if (![[built string] isEqualToString:
+                             @"https://example.com:8443/a%20b?k=v"])
+      result = -4;
+    else if (![[built percentEncodedPath] isEqualToString:@"/a%20b"])
+      result = -5;
+    else if (![[built path] isEqualToString:@"/a b"])
+      result = -6;
+    else if (![[[built URL] absoluteString]
+                 isEqualToString:@"https://example.com:8443/a%20b?k=v"])
+      result = -7;
+  }
+
+  // Parsing.
+  if (result == 0) {
+    NSURLComponents *parsed = [NSURLComponents
+        componentsWithString:@"http://user:p%40ss@host.example:81/x/y?q=1#f"];
+    if (parsed == nil)
+      result = -8;
+    else if (![[parsed scheme] isEqualToString:@"http"] ||
+             ![[parsed user] isEqualToString:@"user"] ||
+             ![[parsed password] isEqualToString:@"p@ss"] ||
+             ![[parsed host] isEqualToString:@"host.example"] ||
+             [[parsed port] intValue] != 81 ||
+             ![[parsed path] isEqualToString:@"/x/y"] ||
+             ![[parsed query] isEqualToString:@"q=1"] ||
+             ![[parsed fragment] isEqualToString:@"f"])
+      result = -9;
+  }
+
+  // Apple: "returns nil if the URL string is malformed" (iOS 7 to 16).
+  if (result == 0 &&
+      [NSURLComponents componentsWithString:@"http://exa mple.com"] != nil)
+    result = -10;
+
+  [pool drain];
+  return result;
+}
 extern int test_runloop_audio_queue(void);
 extern int test_runloop_audio_queue_null(void);
 extern int test_runloop_audio_unit_independent(void);
@@ -7656,6 +7742,7 @@ struct {
     FUNC_DEF(test_NSHashTable_copy_empty),
     FUNC_DEF(test_NSData_base64_data),
     FUNC_DEF(test_NSBundle_subbundleCacheRetainsAutoreleasedBundle),
+    FUNC_DEF(test_NSURLComponents),
 };
 // clang-format on
 
