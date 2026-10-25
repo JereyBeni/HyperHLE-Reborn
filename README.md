@@ -76,8 +76,8 @@ Results reported by the project helper. These are specific to the tested app ver
 | Infinity Blade v7895 | Starts, then hangs after the Unreal logo moves upward; had to be closed from the terminal |
 | Rayman Jungle Run (version not provided) | Works, but the letters/text look strange or unclear; exact visual issue not yet identified |
 | Kingdom Rush (version not provided) | Works, but HyperHLE detects or reports the display as 9:16 |
-| My Talking Angela (version not provided) | Opens a window, but the game display remains completely black in the screenshot |
-| Real Madrid Talking Players (version not provided) | Reaches the character screen and renders the player and 3D background; screenshot appears to show Di María selected/available in the free game |
+| My Talking Angela (version not provided) | Audio plays, but the game display remains completely black in the screenshot; visuals are not confirmed working |
+| Real Madrid Talking Players (version not provided) | Character scene and 3D background render, but Di María does not move and periodically disappears; possible media/animation or rendering issue, not yet confirmed |
 
 ### Community wishlist: 200 classic iOS 5–10 game and app test targets
 
@@ -85,8 +85,8 @@ These are **candidate test targets, not compatibility claims**. The list contain
 
 | App / game | What we'd like to test or fix | Status in this repository |
 | --- | --- | --- |
-| My Talking Angela | Screenshot report: app window opens but the game area stays black | Tested; black screen at startup in the provided screenshot |
-| Real Madrid Talking Players | Screenshot report: character screen renders with a 3D player and stadium background; Di María appears in the free game | Tested; character screen renders in the provided screenshot |
+| My Talking Angela | Screenshot and follow-up report: app window opens and only sounds play; the game area stays black | Tested; audio works but visuals remain black |
+| Real Madrid Talking Players | Character scene renders, but Di María does not move and periodically disappears; possible media/animation or rendering issue, unconfirmed | Tested; 3D scene visible but character behavior is broken |
 | Talking Tom (classic) | Test older 32-bit releases and core interactions | No report; wishlist |
 | Talking Tom Cat 2 | Test touch interactions, sound, and animations | No report; wishlist |
 | Talking Ginger | Test character interactions and mini-games | No report; wishlist |
