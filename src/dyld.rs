@@ -576,7 +576,8 @@ impl Dyld {
         self.thread_exit_routine = Some(write_return_to_host_routine(mem, Self::SVC_THREAD_EXIT));
         // Currently assuming only the app binary contains Objective-C things.
 
-        objc.register_bin_selectors(&bins[0], mem);
+        // Register host selectors before linking so host framework classes
+        // can use their normal selector identities.
         objc.register_host_selectors(mem);
         for bin in bins {
             self.setup_lazy_linking(bin, mem);
@@ -585,6 +586,10 @@ impl Dyld {
             self.do_non_lazy_linking(bin, bins, mem, objc);
         }
 
+        // __objc_selrefs contains guest pointers. Resolve non-lazy external
+        // relocations first, otherwise some entries can still contain their
+        // pre-link values and be mistaken for invalid UTF-8 selector strings.
+        objc.register_bin_selectors(&bins[0], mem);
         objc.register_bin_classes(bundle, &bins[0], mem);
         objc.register_bin_categories(&bins[0], mem);
 
