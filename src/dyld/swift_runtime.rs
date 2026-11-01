@@ -21,6 +21,13 @@
 //! 2. Stable per-symbol data slots for metadata/witness-table symbols (zeroed
 //!    buffers; Swift type metadata is only compared for identity here).
 //! 3. A pattern match for `__swift_FORCE_LOAD_$_*` autolink shims (no-ops).
+//! 4. Conservative Objective-C-interoperable weak-reference entry points.
+//!
+//! Weak references are represented as nil in this compatibility layer: the
+//! emulator does not yet model Swift's weak-reference side tables or the
+//! Objective-C zeroing-weak runtime. Init/assign return the supplied storage,
+//! while loadStrong returns nil. This avoids jumping through unresolved
+//! symbols without pretending to implement object-lifetime tracking.
 //!
 //! The referenced-but-unresolvable `_CNPostalAddress*Key` /
 //! `_PKContactField*` NSString constants and the `PK*` ObjC classes live in
@@ -72,12 +79,20 @@ fn is_swift_function(name: &str) -> bool {
             | "__swift_getExistentialTypeMetadata"
             | "__swift_getInitializedObjCClass"
             | "_swift_deletedMethodError"
+            // Objective-C-interoperable weak-reference entry points.
+            | "_swift_unknownObjectWeakInit"
+            | "_swift_unknownObjectWeakAssign"
+            | "_swift_unknownObjectWeakLoadStrong"
     ) || name.starts_with("__swift_FORCE_LOAD_$_")
         || (name.starts_with("__T0") && name.ends_with("Ma"))
 }
 
 /// True if `name` is a Swift runtime *data* symbol we can give a slot to.
 fn is_swift_data_symbol(name: &str) -> bool {
+    // Runtime-owned global data used by older Swift/ObjC-interoperable apps.
+    if name == "__swiftEmptyArrayStorage" {
+        return true;
+    }
     if !is_swift_mangled(name) {
         return false;
     }
@@ -90,7 +105,6 @@ fn is_swift_data_symbol(name: &str) -> bool {
         || name.ends_with("WP")  // witness table pattern (`__T0SSs8HashablesWP`)
         || name.ends_with("Wvl") // protocol witness table (lazy)
         || name.ends_with("V")   // value-witness table (`__T0BOWV`)
-        || name.ends_with("Ma")  // (kept out by the check above)
         || name.ends_with("M")   // metadata descriptor (`__T0SSM`)
         || name.ends_with("m")   // metadata (`__T0SSm`)
         || name.ends_with("C")   // class metadata (`__T0SC…C`)
@@ -100,7 +114,10 @@ fn is_swift_data_symbol(name: &str) -> bool {
         || name.ends_with("XL")  // layout metadata
         || name.ends_with("Xl")
         || name.ends_with("VN")  // nominal type descriptor
-        || name.ends_with("F") // function metadata
+        || name.ends_with("F")   // function metadata
+        || name.ends_with("Tq")  // protocol requirement descriptor
+        || name.ends_with("Mc")  // protocol conformance descriptor
+        || name.ends_with("Tl")  // protocol/type metadata descriptor
 }
 
 /// Host implementations. All follow the C-ABI-ish `fn(&mut Environment, …)`
@@ -213,6 +230,34 @@ fn swift_get_initialized_objc_class(_env: &mut Environment, class: ConstVoidPtr)
     class
 }
 
+/// Swift's unknown-object weak references can point at either Swift or
+/// Objective-C objects. Full zeroing-weak semantics need Swift and ObjC
+/// lifetime integration, which this emulator does not currently provide.
+/// Treat weak references as nil rather than exposing an unresolved function
+/// pointer or retaining objects forever.
+fn swift_unknown_object_weak_init(
+    _env: &mut Environment,
+    reference: MutVoidPtr,
+    _value: MutVoidPtr,
+) -> MutVoidPtr {
+    reference
+}
+
+fn swift_unknown_object_weak_assign(
+    _env: &mut Environment,
+    reference: MutVoidPtr,
+    _value: MutVoidPtr,
+) -> MutVoidPtr {
+    reference
+}
+
+fn swift_unknown_object_weak_load_strong(
+    _env: &mut Environment,
+    _reference: MutVoidPtr,
+) -> MutVoidPtr {
+    MutVoidPtr::null()
+}
+
 /// `_swift_deletedMethodError` normally traps; the guest only ever takes this
 /// path if it dispatches through a stale witness table, which we've stubbed
 /// as zeroed — so make it a benign "return 0" instead of killing the app.
@@ -299,6 +344,18 @@ impl crate::dyld::Dyld {
                 }
                 "_swift_deletedMethodError" => {
                     &(swift_deleted_method_error as fn(&mut Environment, ConstVoidPtr) -> u32)
+                }
+                "_swift_unknownObjectWeakInit" => {
+                    &(swift_unknown_object_weak_init
+                        as fn(&mut Environment, MutVoidPtr, MutVoidPtr) -> MutVoidPtr)
+                }
+                "_swift_unknownObjectWeakAssign" => {
+                    &(swift_unknown_object_weak_assign
+                        as fn(&mut Environment, MutVoidPtr, MutVoidPtr) -> MutVoidPtr)
+                }
+                "_swift_unknownObjectWeakLoadStrong" => {
+                    &(swift_unknown_object_weak_load_strong
+                        as fn(&mut Environment, MutVoidPtr) -> MutVoidPtr)
                 }
                 _ => {
                     if name.starts_with("__swift_FORCE_LOAD_$_")
