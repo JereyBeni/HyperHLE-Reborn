@@ -925,6 +925,25 @@ impl Dyld {
                 skipped_stubs
             );
         }
+
+        // A few unmatched stubs can be normal (for example, Thumb-compiled
+        // code uses a different instruction sequence). A large majority of
+        // unmatched entries, however, usually means the stub layout is not
+        // understood and continuing could jump through unrelocated pointers.
+        const MAX_SKIPPED_STUBS: usize = 256;
+        if skipped_stub_count > MAX_SKIPPED_STUBS && skipped_stub_count > stub_count / 2 {
+            log!(
+                "Skipped many address! Crashing... {} of {} symbol-stub addresses were skipped in {:?} (first: {:#x?}).",
+                skipped_stub_count,
+                stub_count,
+                bin.name,
+                skipped_stubs
+            );
+            panic!(
+                "Skipped many address! Crashing... unsafe lazy-linker stub layout in {:?}",
+                bin.name
+            );
+        }
     }
 
     /// Link non-lazy symbols for a loaded binary.
