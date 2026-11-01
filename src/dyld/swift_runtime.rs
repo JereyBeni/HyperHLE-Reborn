@@ -400,3 +400,23 @@ impl crate::dyld::Dyld {
         None
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::{is_swift_data_symbol, is_swift_function};
+
+    #[test]
+    fn recognizes_legacy_objc_weak_runtime_functions() {
+        assert!(is_swift_function("_swift_unknownObjectWeakInit"));
+        assert!(is_swift_function("_swift_unknownObjectWeakAssign"));
+        assert!(is_swift_function("_swift_unknownObjectWeakLoadStrong"));
+    }
+
+    #[test]
+    fn recognizes_swift_protocol_descriptors_and_empty_array_storage() {
+        assert!(is_swift_data_symbol("__swiftEmptyArrayStorage"));
+        assert!(is_swift_data_symbol("_$sSH13_rawHashValue4seedS2i_tFTq"));
+        assert!(is_swift_data_symbol("_$s8Dispatch0A13WorkItemFlagsVs10SetAlgebraAAMc"));
+        assert!(is_swift_data_symbol("_$s15_ObjectiveCTypes01_A11CBridgeablePTl"));
+    }
+}
