@@ -1,0 +1,63 @@
+name: HyperHLE branch checks
+
+on:
+  push:
+    branches:
+      - claude/nsurlcomponents
+  pull_request:
+    branches:
+      - claude/nsurlcomponents
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hyperhle-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rust-checks:
+    name: Rust formatting and unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            clang \
+            cmake \
+            libasound2-dev \
+            libdbus-1-dev \
+            libgl1-mesa-dev \
+            libopenal-dev \
+            libudev-dev \
+            libx11-dev \
+            libxcursor-dev \
+            libxi-dev \
+            libxinerama-dev \
+            libxrandr-dev \
+            libxml2-dev \
+            pkg-config
+
+      - name: Install stable Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      - name: Cache Cargo build
+        uses: Swatinem/rust-cache@v2
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Run library tests
+        run: cargo test --locked --no-default-features --lib

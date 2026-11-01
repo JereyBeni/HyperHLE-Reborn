@@ -412,6 +412,11 @@ impl<T: Copy + Default + Eq + Ord + SafeRead + Debug> GenericChar<T> {
         src: ConstPtr<T>,
         size: GuestUSize,
     ) -> GuestUSize {
+        // BSD strlcpy permits size == 0: it writes nothing and still returns
+        // the full source length. Avoid subtracting one from zero here.
+        if size == 0 {
+            return Self::strlen(env, src);
+        }
         let mut i = 0;
         loop {
             let c = env.mem.read(src + i);

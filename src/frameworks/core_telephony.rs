@@ -68,6 +68,14 @@ struct CTTelephonyNetworkInfoHostObject {
 }
 impl HostObject for CTTelephonyNetworkInfoHostObject {}
 
+#[derive(Default)]
+struct CTCallCenterHostObject {
+    /// Retained callback. There are no cellular calls in the emulator, so
+    /// the handler is stored but never invoked.
+    call_event_handler: id,
+}
+impl HostObject for CTCallCenterHostObject {}
+
 // MARK: - Constants
 
 pub const CONSTANTS: ConstantExports = &[
@@ -118,6 +126,24 @@ pub const CONSTANTS: ConstantExports = &[
     (
         "_CTRadioAccessTechnologyLTE",
         HostConstant::NSString("CTRadioAccessTechnologyLTE"),
+    ),
+    // Legacy apps use these call-state strings when registering CTCallCenter
+    // callbacks. HyperHLE has no cellular calls, but the symbols must resolve.
+    (
+        "_CTCallStateIncoming",
+        HostConstant::NSString("CTCallStateIncoming"),
+    ),
+    (
+        "_CTCallStateDialing",
+        HostConstant::NSString("CTCallStateDialing"),
+    ),
+    (
+        "_CTCallStateConnected",
+        HostConstant::NSString("CTCallStateConnected"),
+    ),
+    (
+        "_CTCallStateDisconnected",
+        HostConstant::NSString("CTCallStateDisconnected"),
     ),
 ];
 
@@ -252,6 +278,44 @@ pub const CLASSES: ClassExports = objc_classes! {
     // allocates blocks, so a plain `retain` is sufficient here.
     retain(env, block);
     env.objc.borrow_mut::<CTTelephonyNetworkInfoHostObject>(this).update_notifier_block = block;
+}
+
+@end
+
+// Legacy apps may register a call-event handler even though the emulator has
+// no cellular radio. Preserve the property safely and report no active calls.
+@implementation CTCallCenter: NSObject
+
++ (id)allocWithZone:(NSZonePtr)_zone {
+    env.objc.alloc_object(this, Box::new(CTCallCenterHostObject::default()), &mut env.mem)
+}
+
+- (id)init {
+    this
+}
+
+- (id)currentCalls {
+    nil
+}
+
+- (id)callEventHandler {
+    env.objc.borrow::<CTCallCenterHostObject>(this).call_event_handler
+}
+
+- (())setCallEventHandler:(id)handler {
+    let old = env.objc.borrow::<CTCallCenterHostObject>(this).call_event_handler;
+    if old == handler {
+        return;
+    }
+    retain(env, handler);
+    release(env, old);
+    env.objc.borrow_mut::<CTCallCenterHostObject>(this).call_event_handler = handler;
+}
+
+- (())dealloc {
+    let handler = env.objc.borrow::<CTCallCenterHostObject>(this).call_event_handler;
+    release(env, handler);
+    env.objc.dealloc_object(this, &mut env.mem)
 }
 
 @end

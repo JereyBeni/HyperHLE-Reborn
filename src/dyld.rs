@@ -576,7 +576,8 @@ impl Dyld {
         self.thread_exit_routine = Some(write_return_to_host_routine(mem, Self::SVC_THREAD_EXIT));
         // Currently assuming only the app binary contains Objective-C things.
 
-        objc.register_bin_selectors(&bins[0], mem);
+        // Register host selectors before linking so host framework classes
+        // can use their normal selector identities.
         objc.register_host_selectors(mem);
         for bin in bins {
             self.setup_lazy_linking(bin, mem);
@@ -585,6 +586,10 @@ impl Dyld {
             self.do_non_lazy_linking(bin, bins, mem, objc);
         }
 
+        // __objc_selrefs contains guest pointers. Resolve non-lazy external
+        // relocations first, otherwise some entries can still contain their
+        // pre-link values and be mistaken for invalid UTF-8 selector strings.
+        objc.register_bin_selectors(&bins[0], mem);
         objc.register_bin_classes(bundle, &bins[0], mem);
         objc.register_bin_categories(&bins[0], mem);
 
@@ -923,6 +928,25 @@ impl Dyld {
                 stub_count,
                 bin.name,
                 skipped_stubs
+            );
+        }
+
+        // A few unmatched stubs can be normal (for example, Thumb-compiled
+        // code uses a different instruction sequence). A large majority of
+        // unmatched entries, however, usually means the stub layout is not
+        // understood and continuing could jump through unrelocated pointers.
+        const MAX_SKIPPED_STUBS: usize = 256;
+        if skipped_stub_count > MAX_SKIPPED_STUBS && skipped_stub_count > stub_count / 2 {
+            log!(
+                "Skipped many address! Crashing... {} of {} symbol-stub addresses were skipped in {:?} (first: {:#x?}).",
+                skipped_stub_count,
+                stub_count,
+                bin.name,
+                skipped_stubs
+            );
+            panic!(
+                "Skipped many address! Crashing... unsafe lazy-linker stub layout in {:?}",
+                bin.name
             );
         }
     }

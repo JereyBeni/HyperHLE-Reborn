@@ -499,6 +499,12 @@ impl MovieVideo {
                 return None;
             }
         };
+        log!(
+            "MPMoviePlayerController video: track selected {}x{} ({} bytes)",
+            info.video.width,
+            info.video.height,
+            movie_bytes.len()
+        );
         let video_info = info.video;
         let shared = Arc::new(SharedFrames {
             state: Mutex::new(QueueState {

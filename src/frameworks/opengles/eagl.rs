@@ -678,7 +678,15 @@ pub const CLASSES: ClassExports = objc_classes! {
     if !msg![env; format isEqual:format_rgba8] && !msg![env; format isEqual:format_rgb565] {
         log!("[renderbufferStorage:{:?} fromDrawable:{:?}] Warning: unhandled format {:?}, using RGBA8", target, drawable, format);
     }
-    let internalformat = gles11::RGBA8_OES;
+    // Honour the format requested through EAGLDrawable properties.
+    // The old code parsed RGB565 but always allocated RGBA8, which can fail
+    // on GLES drivers where RGBA8 renderbuffers are not supported.
+    let requested_rgb565 = msg![env; format isEqual:format_rgb565];
+    let preferred_internalformat: gles11::types::GLenum = if requested_rgb565 {
+        0x8D62 // GL_RGB565_OES
+    } else {
+        gles11::RGBA8_OES
+    };
 
     let (width, height) = {
         // ULTRAHLE_MINIONJUMP_RENDERBUFFER_BEGIN
@@ -869,30 +877,70 @@ pub const CLASSES: ClassExports = objc_classes! {
                 // Clear any pre-existing error so we can detect failure of the
                 // storage allocation reliably.
                 unsafe { while gles.GetError() != gles11::NO_ERROR {} }
-                unsafe { gles.RenderbufferStorageOES(target, internalformat, width.try_into().unwrap(), height.try_into().unwrap()); }
-                let needs_fallback = unsafe { gles.GetError() != gles11::NO_ERROR };
-                let alloc_ok = if needs_fallback {
-                    // RGBA8 is optional in OpenGL ES 1.1 Common Profile (requires
-                    // OES_rgb8_rgba8). Fall back to RGBA4 (0x8056) which is
-                    // required by OES_framebuffer_object.
-                    const GL_RGBA4: gles11::types::GLenum = 0x8056;
-                    unsafe { gles.RenderbufferStorageOES(target, GL_RGBA4, width.try_into().unwrap(), height.try_into().unwrap()); }
-                    unsafe { gles.GetError() == gles11::NO_ERROR }
+                // GLES guarantees RGBA4 and RGB565 renderbuffer formats;
+                // RGBA8 depends on OES_rgb8_rgba8. Try the requested format
+                // first, then legal fallbacks. Preserve the exact GL error in
+                // diagnostics instead of hiding it behind a generic failure.
+                const GL_RGBA4: gles11::types::GLenum = 0x8056;
+                const GL_RGB565_OES: gles11::types::GLenum = 0x8D62;
+                let candidates = if requested_rgb565 {
+                    [preferred_internalformat, GL_RGBA4, gles11::RGBA8_OES]
                 } else {
-                    true
+                    [preferred_internalformat, GL_RGBA4, GL_RGB565_OES]
                 };
-                if !alloc_ok {
+                let mut allocated_format = None;
+                let mut last_error = gles11::NO_ERROR;
+                for candidate in candidates {
+                    unsafe {
+                        gles.RenderbufferStorageOES(
+                            target,
+                            candidate,
+                            width.try_into().unwrap(),
+                            height.try_into().unwrap(),
+                        );
+                        last_error = gles.GetError();
+                    }
+                    if last_error == gles11::NO_ERROR {
+                        allocated_format = Some(candidate);
+                        break;
+                    }
                     log!(
-                        "[EAGLContext renderbufferStorage:{:#x} fromDrawable:{:?}] \
-                         failed to allocate renderbuffer storage (tried RGBA8 and RGBA4)",
+                        "[EAGLContext renderbufferStorage:{:#x} fromDrawable:{:?}] \\
+                         renderbuffer format {:#x} failed with GL error {:#x} at {}x{}",
                         target,
-                        drawable
+                        drawable,
+                        candidate,
+                        last_error,
+                        width,
+                        height
                     );
-                    None
-                } else {
+                }
+                if let Some(allocated_format) = allocated_format {
+                    if allocated_format != preferred_internalformat {
+                        log!(
+                            "[EAGLContext renderbufferStorage:{:#x} fromDrawable:{:?}] \\
+                             using fallback color format {:#x} instead of requested {:#x}",
+                            target,
+                            drawable,
+                            allocated_format,
+                            preferred_internalformat
+                        );
+                    }
                     let mut renderbuffer: gles11::types::GLint = 0;
                     unsafe { gles.GetIntegerv(gles11::RENDERBUFFER_BINDING_OES, &mut renderbuffer); }
                     Some(renderbuffer as u32)
+                } else {
+                    log!(
+                        "[EAGLContext renderbufferStorage:{:#x} fromDrawable:{:?}] \\
+                         failed to allocate renderbuffer storage at {}x{}; \\
+                         all candidate formats failed, last GL error {:#x}",
+                        target,
+                        drawable,
+                        width,
+                        height,
+                        last_error
+                    );
+                    None
                 }
             }
         }

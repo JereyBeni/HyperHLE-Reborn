@@ -213,6 +213,7 @@ pub const DYLIB_LIST: &[&super::HostDylib] = &[
     &crate::environment::app_picker::DYLIB, // Not a real library; special internal classes.
     &frameworks::audio_toolbox::DYLIB,
     &frameworks::avfoundation::DYLIB,
+    &frameworks::av_kit::DYLIB,
     &frameworks::assets_library::DYLIB,
     &frameworks::core_animation::DYLIB,
     &frameworks::core_foundation::DYLIB,
@@ -223,6 +224,7 @@ pub const DYLIB_LIST: &[&super::HostDylib] = &[
     &frameworks::game_kit::DYLIB,
     &frameworks::media_player::DYLIB,
     &frameworks::metal::DYLIB,
+    &frameworks::metal_kit::DYLIB,
     &frameworks::openal::DYLIB,
     &frameworks::opengles::DYLIB,
     &frameworks::security::DYLIB,

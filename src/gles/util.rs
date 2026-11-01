@@ -11,7 +11,8 @@ use super::GLES;
 
 #[cfg(test)]
 mod pvrtc_payload_size_tests {
-    use super::pvrtc_payload_size;
+    use super::{normalize_pvrtc_payload, pvrtc_payload_size};
+    use std::borrow::Cow;
     use crate::gles::gles11_raw as gles11;
 
     #[test]
@@ -36,6 +37,32 @@ mod pvrtc_payload_size_tests {
             pvrtc_payload_size(gles11::COMPRESSED_RGBA_PVRTC_2BPPV1_IMG, 1, 1),
             Some(32)
         );
+    }
+
+    #[test]
+    fn normalizes_mtt2_small_mips_with_per_level_prefix() {
+        // The supplied log shows a 16-byte per-level prefix followed by
+        // only one short payload word for tiny mips. PVRTC decoders require
+        // the spec minimum of 32 bytes, so zero-fill only this known shape.
+        let mut data = vec![0xAA; 20]; // 16-byte prefix + 4-byte 2bpp payload
+        data[16..].copy_from_slice(&[1, 2, 3, 4]);
+        let normalized = normalize_pvrtc_payload(&data, 32, true, 4, 4).unwrap();
+        assert!(matches!(&normalized, Cow::Owned(_)));
+        assert_eq!(&normalized[..4], &[1, 2, 3, 4]);
+        assert_eq!(normalized.len(), 32);
+        assert!(normalized[4..].iter().all(|byte| *byte == 0));
+
+        let mut data = vec![0xAA; 24]; // 16-byte prefix + 8-byte 4bpp payload
+        data[16..].copy_from_slice(&[8, 7, 6, 5, 4, 3, 2, 1]);
+        let normalized = normalize_pvrtc_payload(&data, 32, false, 4, 4).unwrap();
+        assert_eq!(&normalized[..8], &[8, 7, 6, 5, 4, 3, 2, 1]);
+        assert_eq!(normalized.len(), 32);
+    }
+
+    #[test]
+    fn does_not_pad_arbitrary_or_larger_malformed_pvrtc_payloads() {
+        assert!(normalize_pvrtc_payload(&[0; 20], 32, true, 8, 8).is_none());
+        assert!(normalize_pvrtc_payload(&[0; 21], 32, true, 4, 4).is_none());
     }
 
     #[test]
@@ -239,6 +266,41 @@ impl ParamTable {
     }
 }
 
+/// Normalize known PVRTC payload layouts seen in My Talking Tom 2.
+fn normalize_pvrtc_payload<'a>(
+    data: &'a [u8],
+    expected_size: usize,
+    is_2bit: bool,
+    width: u32,
+    height: u32,
+) -> Option<std::borrow::Cow<'a, [u8]>> {
+    use std::borrow::Cow;
+
+    if data.len() == expected_size {
+        return Some(Cow::Borrowed(data));
+    }
+    if data.len() == expected_size.saturating_add(16) {
+        return Some(Cow::Borrowed(&data[16..]));
+    }
+
+    // The captured MTT2 log shows tiny mip levels with a 16-byte prefix and
+    // then exactly 4 bytes (PVRTC 2bpp) or 8 bytes (PVRTC 4bpp). PVRTC's
+    // decoder requires at least 32 bytes even for 1x1 textures. Restrict this
+    // recovery to <=4x4 mips and those exact observed lengths; don't silently
+    // repair arbitrary malformed textures.
+    let short_payload_size = if is_2bit { 4 } else { 8 };
+    if width <= 4
+        && height <= 4
+        && data.len() == 16 + short_payload_size
+        && expected_size >= short_payload_size
+    {
+        let mut padded = vec![0; expected_size];
+        padded[..short_payload_size].copy_from_slice(&data[16..]);
+        return Some(Cow::Owned(padded));
+    }
+    None
+}
+
 /// Helper for implementing `glCompressedTexImage2D`: if `internalformat` is
 /// one of the `IMG_texture_compression_pvrtc` formats, decode it via the
 /// software PVRTC decoder and call `glTexImage2D` to upload the resulting
@@ -311,21 +373,43 @@ pub fn try_decode_pvrtc(
         );
         return true;
     };
-    if pvrtc_data.len() != expected_size {
+    let normalized = normalize_pvrtc_payload(
+        pvrtc_data,
+        expected_size,
+        is_2bit,
+        width_u,
+        height_u,
+    );
+    let Some(pvrtc_payload) = normalized.as_deref() else {
         log!(
-            "Warning: try_decode_pvrtc: PVRTC payload size mismatch for \
-             {width}x{height} (level {level}, format {internalformat:#x}, \
-             is_2bit={is_2bit}): got {} bytes, expected {expected_size}; \
+            "Warning: try_decode_pvrtc: PVRTC payload size mismatch for \\
+             {width}x{height} (level {level}, format {internalformat:#x}, \\
+             is_2bit={is_2bit}): got {} bytes, expected {expected_size}; \\
              skipping upload.",
             pvrtc_data.len(),
         );
         return true;
+    };
+    if pvrtc_data.len() == expected_size.saturating_add(16) {
+        log!(
+            "Info: try_decode_pvrtc: ignoring 16-byte per-level prefix for \\
+             {width}x{height} (level {level}, format {internalformat:#x})."
+        );
+    } else if pvrtc_payload.len() == expected_size
+        && pvrtc_data.len() != expected_size
+    {
+        log!(
+            "Warning: try_decode_pvrtc: recovering undersized tiny mip for \\
+             {width}x{height} (level {level}, format {internalformat:#x}); \\
+             stripping 16-byte prefix and zero-padding {} bytes to {expected_size}.",
+            pvrtc_data.len().saturating_sub(16),
+        );
     }
 
     let upload_format = gles11::RGBA;
 
     let pixels = crate::image::decode_pvrtc_with_alpha(
-        pvrtc_data,
+        pvrtc_payload,
         is_2bit,
         width_u,
         height_u,

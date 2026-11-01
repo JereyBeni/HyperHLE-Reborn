@@ -39,6 +39,9 @@ static inline NSRange NSMakeRange(NSUInteger loc, NSUInteger len) {
 }
 
 #define nil ((id)0)
+#ifndef Nil
+#define Nil ((Class)0)
+#endif
 
 // id objc_msgSend(id, SEL, ...);
 
@@ -236,6 +239,18 @@ static inline CGRect CGRectMake(CGFloat x, CGFloat y, CGFloat width,
                                 CGFloat height) {
   return (CGRect){CGPointMake(x, y), CGSizeMake(width, height)};
 }
+
+// UIKit edge insets, kept here because this test app uses a minimal SDK
+// header set rather than Apple's UIKit headers.
+typedef struct {
+  CGFloat top, left, bottom, right;
+} UIEdgeInsets;
+static inline UIEdgeInsets UIEdgeInsetsMake(CGFloat top, CGFloat left,
+                                            CGFloat bottom, CGFloat right) {
+  return (UIEdgeInsets){top, left, bottom, right};
+}
+#define UIEdgeInsetsZero ((UIEdgeInsets){0, 0, 0, 0})
+NSString *NSStringFromUIEdgeInsets(UIEdgeInsets);
 
 typedef struct {
   CGFloat a, b, c, d, tx, ty;

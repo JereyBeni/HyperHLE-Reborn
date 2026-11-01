@@ -169,6 +169,25 @@ pub const CLASSES: ClassExports = objc_classes! {
 
 @end
 
+// UITextInputMode exists on older UIKit versions. The emulator does not
+// model selectable keyboard languages, so return nil consistently instead
+// of letting these selectors fall through to an unimplemented-method path.
+@implementation UITextInputMode: NSObject
+
++ (id)currentInputMode {
+    nil
+}
+
++ (id)activeInputModes {
+    nil
+}
+
+- (id)primaryLanguage {
+    nil
+}
+
+@end
+
 @implementation UITextInputStringTokenizer: NSObject
 
 + (id)allocWithZone:(NSZonePtr)_zone {

@@ -93,6 +93,7 @@ pub mod ns_url;
 pub mod ns_user_defaults;
 pub mod url_loading;
 pub mod url_protocol;
+pub mod ns_url_components;
 pub mod ns_url_connection;
 pub mod ns_url_request;
 pub mod ns_url_response;
@@ -1570,6 +1571,7 @@ pub const DYLIB: crate::dyld::HostDylib = crate::dyld::HostDylib {
         ns_undo_manager::CLASSES,
         ns_net_service::CLASSES,
         ns_url::CLASSES,
+        ns_url_components::CLASSES,
         ns_url_connection::CLASSES,
         ns_url_request::CLASSES,
         ns_url_response::CLASSES,
